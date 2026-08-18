@@ -1,39 +1,59 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./Login.css";
 
 function Login() {
   const navigate = useNavigate();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // ตัวอย่าง Login
-    if (username === "admin" && password === "1234") {
-      navigate("/home");
-    } else {
-      alert("ACCESS DENIED\nชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง");
-    }
+    setIsLoading(true);
+
+    setTimeout(() => {
+      if (username === "admin" && password === "12345678") {
+        navigate("/home");
+      } else {
+        alert("ACCESS DENIED\nชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง");
+        setIsLoading(false);
+      }
+    }, 700);
   };
 
   return (
     <main className="login-page">
 
-      {/* Scan Effect */}
+      {/* Background Grid */}
+      <div className="login-grid"></div>
+
+      {/* Scan Line */}
       <div className="login-scan"></div>
 
-      {/* Background HUD */}
-      <div className="hud hud-1"></div>
-      <div className="hud hud-2"></div>
+      {/* Decorative HUD */}
+      <div className="hud hud-1">
+        <span>01</span>
+        <div></div>
+      </div>
 
-      {/* Top System */}
+      <div className="hud hud-2">
+        <div></div>
+        <span>SYS</span>
+      </div>
+
+      {/* Top Bar */}
       <header className="login-header">
 
         <div className="system-status">
           <span className="status-light"></span>
           SYSTEM ONLINE
+        </div>
+
+        <div className="system-title">
+          CHARACTER DATABASE
         </div>
 
         <div className="system-code">
@@ -42,16 +62,16 @@ function Login() {
 
       </header>
 
-      {/* Main */}
+      {/* Main Content */}
       <section className="login-container">
 
-        {/* Left Side */}
+        {/* LEFT */}
         <div className="login-intro">
 
           <div className="intro-line"></div>
 
           <p className="login-eyebrow">
-            CLASSIFIED DATABASE
+            // CLASSIFIED DATABASE
           </p>
 
           <h1>
@@ -62,38 +82,53 @@ function Login() {
           <p className="intro-description">
             ระบบฐานข้อมูลตัวละครแห่งอนาคต
             <br />
-            กรุณายืนยันตัวตนเพื่อเข้าสู่ระบบ
+            เข้าถึงข้อมูลตัวละครได้จากระบบกลาง
           </p>
 
+          {/* System Information */}
           <div className="system-info">
 
-            <div>
+            <div className="info-item">
               <span>SYSTEM</span>
-              <strong>ONLINE</strong>
+              <strong>
+                <i></i>
+                ONLINE
+              </strong>
             </div>
 
-            <div>
+            <div className="info-item">
               <span>DATABASE</span>
               <strong>SECURE</strong>
             </div>
 
-            <div>
+            <div className="info-item">
               <span>SECURITY</span>
               <strong>LEVEL 04</strong>
             </div>
 
           </div>
 
+          {/* Decorative Code */}
+          <div className="terminal-text">
+            <span>&gt;</span> INITIALIZING DATABASE...
+            <br />
+            <span>&gt;</span> ENCRYPTION: ACTIVE
+            <br />
+            <span>&gt;</span> WAITING FOR AUTHENTICATION_
+          </div>
+
         </div>
 
-        {/* Login Box */}
+        {/* RIGHT LOGIN */}
         <div className="login-box">
 
+          {/* Corner Decorations */}
           <div className="corner top-left"></div>
           <div className="corner top-right"></div>
           <div className="corner bottom-left"></div>
           <div className="corner bottom-right"></div>
 
+          {/* Box Header */}
           <div className="login-box-header">
 
             <div>
@@ -101,7 +136,9 @@ function Login() {
                 SYSTEM ACCESS
               </span>
 
-              <h2>AUTHENTICATION</h2>
+              <h2>
+                AUTHENTICATION
+              </h2>
             </div>
 
             <div className="access-number">
@@ -112,63 +149,85 @@ function Login() {
 
           <div className="login-divider"></div>
 
+          {/* Login Form */}
           <form onSubmit={handleLogin}>
 
-            <label>
+            <label htmlFor="username">
               USER ID
             </label>
 
             <div className="input-wrapper">
 
-              <span>&gt;_</span>
+              <span className="input-icon">
+                &gt;_
+              </span>
 
               <input
+                id="username"
                 type="text"
                 placeholder="ENTER USER ID"
                 value={username}
                 onChange={(e) =>
                   setUsername(e.target.value)
                 }
+                autoComplete="username"
                 required
               />
 
             </div>
 
-            <label>
+            <label htmlFor="password">
               ACCESS CODE
             </label>
 
             <div className="input-wrapper">
 
-              <span>◆</span>
+              <span className="input-icon">
+                ◆
+              </span>
 
               <input
+                id="password"
                 type="password"
                 placeholder="ENTER ACCESS CODE"
                 value={password}
                 onChange={(e) =>
                   setPassword(e.target.value)
                 }
+                autoComplete="current-password"
                 required
               />
 
             </div>
 
+            {/* Login Button */}
             <button
               type="submit"
               className="access-button"
+              disabled={isLoading}
             >
-              <span>ACCESS SYSTEM</span>
-              <span>→</span>
+
+              <span>
+                {isLoading
+                  ? "AUTHENTICATING..."
+                  : "ACCESS SYSTEM"}
+              </span>
+
+              <span className="button-arrow">
+                →
+              </span>
+
             </button>
 
           </form>
 
+          {/* Connection Status */}
           <div className="login-status">
 
-            <span className="status-light"></span>
-
-            CONNECTION SECURE
+            <div>
+              <span className="status-light"></span>
+              CONNECTION SECURE
+            </div>
 
             <span className="status-right">
               ENCRYPTED
@@ -180,7 +239,7 @@ function Login() {
 
       </section>
 
-      {/* Bottom */}
+      {/* Bottom Status */}
       <footer className="login-footer">
 
         <span>
@@ -191,8 +250,8 @@ function Login() {
           SYSTEM VERSION 1.0.4
         </span>
 
-        <span>
-          ALL SYSTEMS OPERATIONAL
+        <span className="footer-online">
+          ● ALL SYSTEMS OPERATIONAL
         </span>
 
       </footer>
